@@ -5,5 +5,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CampanhaRepository extends JpaRepository<Campanha, Long> {
-
+	
+	public List<Campanha> 
 }

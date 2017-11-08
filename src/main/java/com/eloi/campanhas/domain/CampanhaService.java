@@ -29,5 +29,13 @@ public class CampanhaService {
 			
 		return Optional.of(clubeRepository.getOne(id.get()));
 	}
+
+	public Campanha getCampanha(Long id) {
+		Campanha campanha = campanhaRepository.getOne(id);
+		
+		campanha.validaDataVigente();
+		
+		return campanha;
+	}
 	
 }

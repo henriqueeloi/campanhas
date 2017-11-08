@@ -88,7 +88,7 @@ public class CampanhaController {
 	}
 
 	private Campanha getCampanha(Long id) {
-		Campanha one = campanhaRepository.getOne(id);
+		Campanha one = campanhaService.getCampanha(id);
 		if(one == null) throw new NotFoundException();
 		return one;
 	}

@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
+import com.eloi.campanhas.infrastructure.exception.DataVigenciaVencidaException;
+
 @Entity
 public class Campanha {
 	@Id
@@ -22,13 +24,16 @@ public class Campanha {
 	@ManyToOne(cascade = { CascadeType.ALL })
 	private Clube timeCoracao;
 	
-	private LocalDateTime dataVigencia;
+	private LocalDateTime dataInicioVigencia;
+	
+	private LocalDateTime dataFimVigencia;
 
-	public Campanha(String nome, Clube timeCoracao, LocalDateTime dataVigencia) {
+	public Campanha(String nome, Clube timeCoracao, LocalDateTime dataVigencia, LocalDateTime dataFimVigencia) {
 		super();
 		this.nome = nome;
 		this.timeCoracao = timeCoracao;
-		this.dataVigencia = dataVigencia;
+		this.dataInicioVigencia = dataVigencia;
+		this.dataFimVigencia = dataFimVigencia;
 	}
 	public Campanha() {}
 	
@@ -45,7 +50,7 @@ public class Campanha {
 	}
 
 	public LocalDateTime getDataVigencia() {
-		return dataVigencia;
+		return dataInicioVigencia;
 	}
 	public void defineClube(Clube clube) {
 		this.timeCoracao = clube;
@@ -54,4 +59,17 @@ public class Campanha {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	public LocalDateTime getDataFimVigencia() {
+		return dataFimVigencia;
+	}
+
+	public void validaDataVigente() {
+		if(LocalDateTime.now().isAfter(this.getDataFimVigencia()))
+			throw new DataVigenciaVencidaException();
+		
+	}
+	public LocalDateTime getDataInicioVigencia() {
+		return dataInicioVigencia;
+	}
+	
 }
