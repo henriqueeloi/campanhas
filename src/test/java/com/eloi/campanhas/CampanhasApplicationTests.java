@@ -1,9 +1,12 @@
 package com.eloi.campanhas;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,33 +36,67 @@ public class CampanhasApplicationTests {
 		
 		String nome = "Poderoso Timão";
 		Clube timeCoracao = new Clube("Sport Club Corinthians Paulista");
-		LocalDateTime dataInicioVigencia = LocalDateTime.of(2017, 11, 1, 11, 59);
-		LocalDateTime dataFimVigencia = LocalDateTime.of(2017, 11, 3, 11, 59);
-		
+		LocalDate dataInicioVigencia = LocalDate.of(2017, 11, 1);
+		LocalDate dataFimVigencia = LocalDate.of(2017, 11, 3);
+				
 		Campanha campanha = new Campanha(nome, timeCoracao, dataInicioVigencia, dataFimVigencia);
 		Campanha saved = service.save(campanha);
 				
 		service.getCampanha(saved.getId());		
 	}
 
-	@Test(expected = DataVigenciaVencidaException.class)
+	@Test
 	public void deveRetornarCampanhasComMesmaDataDeVigencia(){
 		
 		String nome = "Campanha 1";
 		Clube timeCoracao = new Clube("Sport Club Corinthians Paulista");
-		LocalDateTime dataInicioVigencia = LocalDateTime.of(2017, 11, 1, 11, 59);
-		LocalDateTime dataFimVigencia = LocalDateTime.of(2017, 11, 20, 11, 59);
+		LocalDate dataInicioVigencia = LocalDate.of(2017, 11, 1);
+		LocalDate dataFimVigencia = LocalDate.of(2017, 11, 20);
 		Campanha campanha = new Campanha(nome, timeCoracao, dataInicioVigencia, dataFimVigencia);
 		Campanha saved = service.save(campanha);
 		
 		String nome2 = "Campanha 2";
 		Clube timeCoracao2 = new Clube("Sport Club Corinthians Paulista");
-		LocalDateTime dataInicioVigencia2 = LocalDateTime.of(2017, 11, 1, 11, 59);
-		LocalDateTime dataFimVigencia2 = LocalDateTime.of(2017, 11, 19, 11, 59);		
+		LocalDate dataInicioVigencia2 = LocalDate.of(2017, 11, 1);
+		LocalDate dataFimVigencia2 = LocalDate.of(2017, 11, 19);		
 		Campanha campanha2 = new Campanha(nome2, timeCoracao2, dataInicioVigencia2, dataFimVigencia2);		
 		Campanha saved2 = service.save(campanha2);
 				
-		repository
+		List<Campanha> vigencia = repository.findByDataInicioVigenciaAndDataFimVigencia(dataInicioVigencia2, dataFimVigencia2);
+		
+		Assert.assertTrue(vigencia.stream().filter(c -> c.getDataInicioVigencia().equals(dataInicioVigencia2) && c.getDataFimVigencia().equals(dataFimVigencia2)).count() == 1);
+	}
+	
+	@Test
+	public void deveMudarDataVigenciaIguais(){
+		String nome = "Campanha 1";
+		Clube timeCoracao = new Clube("Sport Club Corinthians Paulista");
+		LocalDate dataInicioVigencia = LocalDate.of(2017, 10, 1);
+		LocalDate dataFimVigencia = LocalDate.of(2017, 10, 03);
+		Campanha campanha = new Campanha(nome, timeCoracao, dataInicioVigencia, dataFimVigencia);
+		Campanha saved = service.save(campanha);
+		
+		String nome2 = "Campanha 2";
+		Clube timeCoracao2 = new Clube("Sport Club Corinthians Paulista");
+		LocalDate dataInicioVigencia2 = LocalDate.of(2017, 10, 1);
+		LocalDate dataFimVigencia2 = LocalDate.of(2017, 10, 02);		
+		Campanha campanha2 = new Campanha(nome2, timeCoracao2, dataInicioVigencia2, dataFimVigencia2);		
+		Campanha saved2 = service.save(campanha2);
+		
+		String nome3 = "Campanha 2";
+		Clube timeCoracao3 = new Clube("Sport Club Corinthians Paulista");
+		LocalDate dataInicioVigencia3 = LocalDate.of(2017, 10, 1);
+		LocalDate dataFimVigencia3 = LocalDate.of(2017, 10, 02);		
+		Campanha campanha3 = new Campanha(nome3, timeCoracao3, dataInicioVigencia3, dataFimVigencia3);		
+		
+		Campanha saved3 = service.save(campanha3);
+		
+		Campanha campanha1DataAlterada = repository.getOne(saved.getId());		
+		Assert.assertTrue(campanha1DataAlterada.getDataFimVigencia().isAfter(dataFimVigencia));
+
+		Campanha campanha2DataAlterada = repository.getOne(saved2.getId());
+		Assert.assertTrue(campanha2DataAlterada.getDataFimVigencia().isAfter(dataFimVigencia2));
+			
 	}
 
 	

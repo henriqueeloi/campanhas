@@ -1,6 +1,6 @@
 package com.eloi.campanhas.domain;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -24,16 +24,16 @@ public class Campanha {
 	@ManyToOne(cascade = { CascadeType.ALL })
 	private Clube timeCoracao;
 	
-	private LocalDateTime dataInicioVigencia;
+	private LocalDate dataInicioVigencia;
 	
-	private LocalDateTime dataFimVigencia;
+	private LocalDate dataFimVigencia;
 
-	public Campanha(String nome, Clube timeCoracao, LocalDateTime dataVigencia, LocalDateTime dataFimVigencia) {
+	public Campanha(String nome, Clube timeCoracao, LocalDate dataInicioVigencia2, LocalDate dataFimVigencia2) {
 		super();
 		this.nome = nome;
 		this.timeCoracao = timeCoracao;
-		this.dataInicioVigencia = dataVigencia;
-		this.dataFimVigencia = dataFimVigencia;
+		this.dataInicioVigencia = dataInicioVigencia2;
+		this.dataFimVigencia = dataFimVigencia2;
 	}
 	public Campanha() {}
 	
@@ -49,7 +49,7 @@ public class Campanha {
 		return timeCoracao;
 	}
 
-	public LocalDateTime getDataVigencia() {
+	public LocalDate getDataVigencia() {
 		return dataInicioVigencia;
 	}
 	public void defineClube(Clube clube) {
@@ -59,17 +59,21 @@ public class Campanha {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public LocalDateTime getDataFimVigencia() {
+	public LocalDate getDataFimVigencia() {
 		return dataFimVigencia;
 	}
 
-	public void validaDataVigente() {
-		if(LocalDateTime.now().isAfter(this.getDataFimVigencia()))
-			throw new DataVigenciaVencidaException();
-		
-	}
-	public LocalDateTime getDataInicioVigencia() {
+	public LocalDate getDataInicioVigencia() {
 		return dataInicioVigencia;
+	}
+
+	public void validaDataVigente() {
+		if(LocalDate.now().isAfter(this.getDataFimVigencia()))
+			throw new DataVigenciaVencidaException();	
+	}
+	
+	public void AddUmDiaDataFinalVigencia(){
+		this.dataFimVigencia = this.dataFimVigencia.plusDays(1);
 	}
 	
 }
