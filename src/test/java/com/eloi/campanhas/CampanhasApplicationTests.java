@@ -1,7 +1,6 @@
 package com.eloi.campanhas;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -89,7 +88,7 @@ public class CampanhasApplicationTests {
 		LocalDate dataFimVigencia3 = LocalDate.of(2017, 10, 02);		
 		Campanha campanha3 = new Campanha(nome3, timeCoracao3, dataInicioVigencia3, dataFimVigencia3);		
 		
-		Campanha saved3 = service.save(campanha3);
+		service.save(campanha3);
 		
 		Campanha campanha1DataAlterada = repository.getOne(saved.getId());		
 		Assert.assertTrue(campanha1DataAlterada.getDataFimVigencia().isAfter(dataFimVigencia));

@@ -1,7 +1,8 @@
-package com.eloi.campanhas.domain;
+package com.eloi.campanhas.application;
 
 import org.springframework.hateoas.ResourceSupport;
 
+import com.eloi.campanhas.domain.Campanha;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

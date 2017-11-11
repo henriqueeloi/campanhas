@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.eloi.campanhas.domain.Campanha;
 import com.eloi.campanhas.domain.CampanhaRepository;
-import com.eloi.campanhas.domain.CampanhaResource;
 import com.eloi.campanhas.domain.CampanhaService;
 import com.eloi.campanhas.infrastructure.exception.NotFoundException;
 
