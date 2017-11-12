@@ -15,7 +15,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.eloi.campanhas.domain.Campanha;
 import com.eloi.campanhas.domain.CampanhaRepository;
 import com.eloi.campanhas.domain.CampanhaService;
-import com.eloi.campanhas.domain.Clube;
 import com.eloi.campanhas.infrastructure.exception.DataVigenciaVencidaException;
 
 @Transactional
@@ -34,7 +33,7 @@ public class CampanhasApplicationTests {
 	public void deveValidarVigenciaDaCampanha(){
 		
 		String nome = "Poderoso Timão";
-		Clube timeCoracao = new Clube("Sport Club Corinthians Paulista");
+		Long timeCoracao = 1l;
 		LocalDate dataInicioVigencia = LocalDate.of(2017, 11, 1);
 		LocalDate dataFimVigencia = LocalDate.of(2017, 11, 3);
 				
@@ -48,14 +47,14 @@ public class CampanhasApplicationTests {
 	public void deveRetornarCampanhasComMesmaDataDeVigencia(){
 		
 		String nome = "Campanha 1";
-		Clube timeCoracao = new Clube("Sport Club Corinthians Paulista");
+		Long timeCoracao = 1l;
 		LocalDate dataInicioVigencia = LocalDate.of(2017, 11, 1);
 		LocalDate dataFimVigencia = LocalDate.of(2017, 11, 20);
 		Campanha campanha = new Campanha(nome, timeCoracao, dataInicioVigencia, dataFimVigencia);
 		Campanha saved = service.save(campanha);
 		
 		String nome2 = "Campanha 2";
-		Clube timeCoracao2 = new Clube("Sport Club Corinthians Paulista");
+		Long timeCoracao2 = 1l;
 		LocalDate dataInicioVigencia2 = LocalDate.of(2017, 11, 1);
 		LocalDate dataFimVigencia2 = LocalDate.of(2017, 11, 19);		
 		Campanha campanha2 = new Campanha(nome2, timeCoracao2, dataInicioVigencia2, dataFimVigencia2);		
@@ -69,21 +68,21 @@ public class CampanhasApplicationTests {
 	@Test
 	public void deveMudarDataVigenciaIguais(){
 		String nome = "Campanha 1";
-		Clube timeCoracao = new Clube("Sport Club Corinthians Paulista");
+		Long timeCoracao = 1l;
 		LocalDate dataInicioVigencia = LocalDate.of(2017, 10, 1);
 		LocalDate dataFimVigencia = LocalDate.of(2017, 10, 03);
 		Campanha campanha = new Campanha(nome, timeCoracao, dataInicioVigencia, dataFimVigencia);
 		Campanha saved = service.save(campanha);
 		
 		String nome2 = "Campanha 2";
-		Clube timeCoracao2 = new Clube("Sport Club Corinthians Paulista");
+		Long timeCoracao2 = 1l;
 		LocalDate dataInicioVigencia2 = LocalDate.of(2017, 10, 1);
 		LocalDate dataFimVigencia2 = LocalDate.of(2017, 10, 02);		
 		Campanha campanha2 = new Campanha(nome2, timeCoracao2, dataInicioVigencia2, dataFimVigencia2);		
 		Campanha saved2 = service.save(campanha2);
 		
 		String nome3 = "Campanha 2";
-		Clube timeCoracao3 = new Clube("Sport Club Corinthians Paulista");
+		Long timeCoracao3 = 1l;
 		LocalDate dataInicioVigencia3 = LocalDate.of(2017, 10, 1);
 		LocalDate dataFimVigencia3 = LocalDate.of(2017, 10, 02);		
 		Campanha campanha3 = new Campanha(nome3, timeCoracao3, dataInicioVigencia3, dataFimVigencia3);		

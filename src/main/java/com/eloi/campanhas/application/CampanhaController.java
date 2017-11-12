@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +38,9 @@ public class CampanhaController {
 	@Autowired
 	private CampanhaService campanhaService;
 	
+	@Value("${socio.torcedor.url}")
+	private String SOCIO_TORCEDOR_URL;
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<CampanhaResource> getById(@PathVariable("id") Long id){
 
@@ -44,6 +49,7 @@ public class CampanhaController {
 		CampanhaResource campanhaResource = new CampanhaResource(findOne);
 				
 		campanhaResource.add(linkTo(methodOn(CampanhaController.class).getById(findOne.getId())).withSelfRel());
+		campanhaResource.add(new Link(SOCIO_TORCEDOR_URL + "/clubes/" + findOne.getIdTimeCoracao(),"timeCoracao"));
 		return new ResponseEntity<CampanhaResource>(campanhaResource, HttpStatus.OK);	
 	}
 		

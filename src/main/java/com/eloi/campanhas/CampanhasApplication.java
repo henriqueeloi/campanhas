@@ -1,21 +1,17 @@
 package com.eloi.campanhas;
 
+import static java.time.format.DateTimeFormatter.ofPattern;
+
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
-import com.eloi.campanhas.infrastructure.LocalDateDeserializer;
-import com.eloi.campanhas.infrastructure.LocalDateSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
-import java.time.LocalDate;
-
-import static java.time.format.DateTimeFormatter.ofPattern;
-
+@EntityScan(
+		basePackageClasses = {CampanhasApplication.class, Jsr310JpaConverters.class}
+)
 @SpringBootApplication
 public class CampanhasApplication {
 
@@ -25,15 +21,15 @@ public class CampanhasApplication {
 	
 	public static final DateTimeFormatter FORMATTER = ofPattern("dd::MM::yyyy");
 
-    @Bean
-    @Primary
-    public ObjectMapper serializingObjectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        JavaTimeModule javaTimeModule = new JavaTimeModule();
-        javaTimeModule.addSerializer(LocalDate.class, new LocalDateSerializer());
-        javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer());
-        objectMapper.registerModule(javaTimeModule);
-        return objectMapper;
-    }
+//    @Bean
+//    @Primary
+//    public ObjectMapper serializingObjectMapper() {
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        JavaTimeModule javaTimeModule = new JavaTimeModule();
+//        javaTimeModule.addSerializer(LocalDate.class, new LocalDateSerializer());
+//        javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer());
+//        objectMapper.registerModule(javaTimeModule);
+//        return objectMapper;
+//    }
 
 }

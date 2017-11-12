@@ -1,15 +1,17 @@
 package com.eloi.campanhas.domain;
 
-import java.util.Optional;
+import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.eloi.campanhas.infrastructure.ClubeApi;
 
 @Service
 public class CampanhaService {
 
 	@Autowired
-	private ClubeRepository clubeRepository;
+	private ClubeApi clubApi;
 	
 	@Autowired
 	private CampanhaRepository campanhaRepository;
@@ -17,22 +19,21 @@ public class CampanhaService {
 	@Autowired
 	AtualizaDataValidadeCampanha atualizaDataValidadeCampanha;
 	
-	public Campanha save(Campanha campanha){
-		
-		Optional<Clube> clube = getClube(campanha);
-		campanha.defineClube(clube.get());
-
+	public Campanha save(Campanha campanha) throws EntityNotFoundException{		
+		clubeExiste(campanha);		
 		atualizaDataValidadeCampanha.atualizarCampanhas(campanha);
-		
 		return campanhaRepository.save(campanha);		
 	}
 
-	private Optional<Clube> getClube(Campanha campanha) {		
-		Optional<Long> id = campanha.getTimeCoracao().existId();
-		if(!id.isPresent())
-			return Optional.of(campanha.getTimeCoracao());
-			
-		return Optional.of(clubeRepository.getOne(id.get()));
+	private void clubeExiste(Campanha campanha) throws EntityNotFoundException {		
+
+		Long id = campanha.getIdTimeCoracao();
+		
+		Clube clube = clubApi.getClube(id);
+		if(!clube.existId().isPresent()) {
+			throw new EntityNotFoundException("Time do coração não existe");
+		}
+		
 	}
 
 	public Campanha getCampanha(Long id) {

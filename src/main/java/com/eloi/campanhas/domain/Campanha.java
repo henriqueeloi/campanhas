@@ -1,13 +1,11 @@
 package com.eloi.campanhas.domain;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 import com.eloi.campanhas.infrastructure.exception.DataVigenciaVencidaException;
@@ -19,19 +17,18 @@ public class Campanha {
 	private Long id;
 	
 	private String nome;
-	
-	@NotNull
-	@ManyToOne(cascade = { CascadeType.ALL })
-	private Clube timeCoracao;
-	
-	private LocalDateTime dataInicioVigencia;
-	
-	private LocalDateTime dataFimVigencia;
 
-	public Campanha(String nome, Clube timeCoracao, LocalDateTime dataInicioVigencia, LocalDateTime dataFimVigencia) {
+	@NotNull(message="Deve informar um time")
+	private Long idTimeCoracao;
+	
+	private LocalDate dataInicioVigencia;
+	
+	private LocalDate dataFimVigencia;
+
+	public Campanha(String nome, Long timeCoracao, LocalDate dataInicioVigencia, LocalDate dataFimVigencia) {
 		super();
 		this.nome = nome;
-		this.timeCoracao = timeCoracao;
+		this.idTimeCoracao = timeCoracao;
 		this.dataInicioVigencia = dataInicioVigencia;
 		this.dataFimVigencia = dataFimVigencia;
 	}
@@ -44,36 +41,35 @@ public class Campanha {
 	public String getNome() {
 		return nome;
 	}
-
-	public Clube getTimeCoracao() {
-		return timeCoracao;
+	
+	public Long getIdTimeCoracao() {
+		return idTimeCoracao;
 	}
 
-	public LocalDateTime getDataVigencia() {
+	public LocalDate getDataVigencia() {
 		return dataInicioVigencia;
 	}
-	public void defineClube(Clube clube) {
-		this.timeCoracao = clube;
+	public void defineClube(Long idTimeCoracao) {
+		this.idTimeCoracao = idTimeCoracao;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public LocalDateTime getDataFimVigencia() {
+	public LocalDate getDataFimVigencia() {
 		return dataFimVigencia;
 	}
 
-	public LocalDateTime getDataInicioVigencia() {
+	public LocalDate getDataInicioVigencia() {
 		return dataInicioVigencia;
 	}
 
 	public void validaDataVigente() {
-		if(LocalDateTime.now().isAfter(this.getDataFimVigencia()))
+		if(LocalDate.now().isAfter(this.getDataFimVigencia()))
 			throw new DataVigenciaVencidaException();	
 	}
 	
 	public void AddUmDiaDataFinalVigencia(){
 		this.dataFimVigencia = this.dataFimVigencia.plusDays(1);
 	}
-	
 }
